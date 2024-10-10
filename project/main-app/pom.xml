@@ -18,7 +18,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>ir.maktabsharif115.springboot</groupId>
+            <artifactId>user-management</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
