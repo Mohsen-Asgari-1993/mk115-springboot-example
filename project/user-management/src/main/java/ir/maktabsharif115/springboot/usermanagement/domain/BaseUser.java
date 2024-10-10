@@ -34,6 +34,7 @@ public class BaseUser extends BaseEntity<Long> {
     public static final String LAST_NAME = "last_name";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String MOBILE_NUMBER = "mobile_number";
     public static final String IS_ACTIVE = "is_active";
     public static final String CREATE_DATE = "create_date";
     public static final String LAST_UPDATE_DATE = "last_update_date";
@@ -54,6 +55,9 @@ public class BaseUser extends BaseEntity<Long> {
 
     @Column(name = PASSWORD)
     private String password;
+
+    @Column(name = MOBILE_NUMBER)
+    private String mobileNumber;
 
     @Column(name = IS_ACTIVE)
     private Boolean isActive = false;
