@@ -2,10 +2,7 @@ package ir.maktabsharif115.springboot.pagesetting.service.dto.extra;
 
 import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTransactionPurpose;
 import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTransactionType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -14,6 +11,7 @@ import java.time.ZonedDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class WalletTransactionSearch implements Serializable {
 
     private Long userId;

@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserInfo implements Serializable {
 
-    public static final String ID = "id";
+    public static final String ID = "_id";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String USERNAME = "username";
