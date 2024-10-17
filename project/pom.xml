@@ -19,6 +19,7 @@
         <module>main-app</module>
         <module>rdbms-crud</module>
         <module>user-management</module>
+        <module>mongo-crud</module>
     </modules>
 
     <properties>
