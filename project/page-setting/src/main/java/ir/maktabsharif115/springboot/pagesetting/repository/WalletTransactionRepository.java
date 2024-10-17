@@ -40,6 +40,8 @@ interface WalletTransactionCustomRepository {
 
     List<Document> aggregateUserTransactionByPurpose();
 
+    List<Document> getSimpleFacetData();
+
 }
 
 @RequiredArgsConstructor
@@ -96,6 +98,46 @@ class WalletTransactionCustomRepositoryImpl implements WalletTransactionCustomRe
 //                            Sort.by("total").descending(),
                                 Sort.Direction.DESC, "total"
                         )
+                ),
+                WalletTransaction.class,
+                Document.class
+        ).getMappedResults();
+    }
+
+    @Override
+    public List<Document> getSimpleFacetData() {
+        return mongoTemplate.aggregate(
+                Aggregation.newAggregation(
+                        Aggregation.facet(
+                                        Aggregation.match(
+                                                Criteria.where(WalletTransaction.PURPOSE).is(WalletTransactionPurpose.WALLET_INCREASE_BY_USER)
+                                        ),
+                                        Aggregation.group(WalletTransaction.USER_ID)
+                                                .sum(WalletTransaction.TOTAL_CHANGE).as("total"),
+                                        Aggregation.sort(
+                                                Sort.Direction.DESC, "total"
+                                        )
+                                ).as("first")
+                                .and(
+                                        Aggregation.match(
+                                                Criteria.where(WalletTransaction.PURPOSE).is(WalletTransactionPurpose.WALLET_INCREASE_BY_USER)
+                                        ),
+                                        Aggregation.group(WalletTransaction.USER_ID)
+                                                .sum(WalletTransaction.TOTAL_CHANGE).as("total"),
+                                        Aggregation.sort(
+                                                Sort.Direction.DESC, "total"
+                                        )
+                                ).as("second")
+                                .and(
+                                        Aggregation.match(
+                                                Criteria.where(WalletTransaction.PURPOSE).is(WalletTransactionPurpose.WALLET_INCREASE_BY_USER)
+                                        ),
+                                        Aggregation.group(WalletTransaction.USER_ID)
+                                                .sum(WalletTransaction.TOTAL_CHANGE).as("total"),
+                                        Aggregation.sort(
+                                                Sort.Direction.DESC, "total"
+                                        )
+                                ).as("third")
                 ),
                 WalletTransaction.class,
                 Document.class
