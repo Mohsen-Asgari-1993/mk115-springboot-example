@@ -1,4 +1,4 @@
-package ir.maktabsharif115.springboot.usermanagement.annotatinos;
+package ir.maktabsharif115.springboot.usermanagement.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,13 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SecurityAuthority {
+public @interface SecurityRole {
 
-    String[] name();
+    Role[] roles();
+
+    @interface Role {
+        String name();
+
+        SecurityAuthority[] authorities();
+    }
 }

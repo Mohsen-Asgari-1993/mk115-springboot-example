@@ -1,6 +1,6 @@
 package ir.maktabsharif115.springboot.usermanagement.service.impl;
 
-import ir.maktabsharif115.springboot.usermanagement.annotatinos.SecurityAuthority;
+import ir.maktabsharif115.springboot.usermanagement.annotations.SecurityAuthority;
 import ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames;
 import ir.maktabsharif115.springboot.usermanagement.domain.Authority;
 import ir.maktabsharif115.springboot.usermanagement.domain.Role;

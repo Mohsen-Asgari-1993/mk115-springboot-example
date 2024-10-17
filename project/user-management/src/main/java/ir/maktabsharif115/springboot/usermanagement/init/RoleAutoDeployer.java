@@ -1,7 +1,7 @@
 package ir.maktabsharif115.springboot.usermanagement.init;
 
-import ir.maktabsharif115.springboot.usermanagement.annotatinos.SecurityAuthority;
-import ir.maktabsharif115.springboot.usermanagement.annotatinos.SecurityRole;
+import ir.maktabsharif115.springboot.usermanagement.annotations.SecurityAuthority;
+import ir.maktabsharif115.springboot.usermanagement.annotations.SecurityRole;
 import ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames;
 import ir.maktabsharif115.springboot.usermanagement.constants.RoleNames;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
                         authorities = {
                                 @SecurityAuthority(name = {
                                         AuthorityNames.ADMIN_MANAGE,
-                                        AuthorityNames.ROLE_MANAGE
+                                        AuthorityNames.ROLE_MANAGE,
                                 })
                         }
                 )
