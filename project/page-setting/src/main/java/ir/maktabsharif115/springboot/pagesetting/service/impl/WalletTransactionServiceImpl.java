@@ -6,7 +6,6 @@ import ir.maktabsharif115.springboot.pagesetting.document.WalletTransaction;
 import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTransactionPurpose;
 import ir.maktabsharif115.springboot.pagesetting.repository.WalletTransactionRepository;
 import ir.maktabsharif115.springboot.pagesetting.service.WalletTransactionService;
-import ir.maktabsharif115.springboot.usermanagement.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -25,8 +24,6 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
 
     private final Faker faker = new Faker();
 
-    private final UserService userService;
-
     @PostConstruct
     public void init() {
         if (baseRepository.count() == 0) {
@@ -39,12 +36,12 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
         List<UserInfo> users = initFakeUsers();
         List<WalletTransaction> transactions = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
-            addNewTransaction(i, random, users, transactions);
+            addNewTransaction(random, users, transactions);
         }
         baseRepository.saveAll(transactions);
     }
 
-    private void addNewTransaction(int i, Random random, List<UserInfo> users, List<WalletTransaction> transactions) {
+    private void addNewTransaction(Random random, List<UserInfo> users, List<WalletTransaction> transactions) {
         UserInfo user = users.get(random.nextInt(0, users.size()));
         WalletTransaction transaction = new WalletTransaction();
         transaction.setUserId(user.getId());
