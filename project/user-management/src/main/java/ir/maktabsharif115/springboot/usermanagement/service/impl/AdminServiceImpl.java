@@ -9,10 +9,12 @@ import ir.maktabsharif115.springboot.usermanagement.repository.AdminRepository;
 import ir.maktabsharif115.springboot.usermanagement.service.AdminService;
 import ir.maktabsharif115.springboot.usermanagement.service.RoleService;
 import jakarta.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -47,5 +49,12 @@ public class AdminServiceImpl extends BaseUserServiceImpl<Admin, AdminRepository
             );
             baseRepository.save(admin);
         }
+    }
+
+    @Scheduled(cron = "0/10 * * * * *")
+    public void runOnTime() {
+        System.out.println(
+                ZonedDateTime.now()
+        );
     }
 }
