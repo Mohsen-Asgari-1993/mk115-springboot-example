@@ -37,7 +37,9 @@ public class AdminServiceImpl extends BaseUserServiceImpl<Admin, AdminRepository
             admin.setLastName("admin");
             admin.setIsActive(true);
             admin.setUsername("Admin");
-            admin.setPassword("123456789");
+            admin.setPassword(
+                    passwordEncoder.encode("123456789")
+            );
             admin.setRoles(
                     Set.of(
                             optionalAdminRole.get()
