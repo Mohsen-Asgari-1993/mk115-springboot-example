@@ -1,5 +1,6 @@
 package ir.maktabsharif115.springboot.pagesetting.document;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,5 +24,6 @@ public class FooterColumn implements Serializable {
 
     @NotNull
     @Size(min = 1)
+    @Valid
     private List<FooterRow> rows = new ArrayList<>();
 }
