@@ -6,9 +6,12 @@ import ir.maktabsharif115.springboot.pagesetting.document.WalletTransaction;
 import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTransactionPurpose;
 import ir.maktabsharif115.springboot.pagesetting.repository.WalletTransactionRepository;
 import ir.maktabsharif115.springboot.pagesetting.service.WalletTransactionService;
+import ir.maktabsharif115.springboot.pagesetting.service.dto.extra.WalletTransactionSearch;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -29,6 +32,12 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
         if (baseRepository.count() == 0) {
             insertFakeData();
         }
+    }
+
+    @Override
+//    @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).WALLET_MANAGE)")
+    public Page<WalletTransaction> findAll(WalletTransactionSearch search, Pageable pageable) {
+        return baseRepository.findAll(search, pageable);
     }
 
     private void insertFakeData() {

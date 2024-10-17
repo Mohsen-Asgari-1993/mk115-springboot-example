@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
                 AuthorityNames.ADMIN_MANAGE,
                 AuthorityNames.ROLE_MANAGE,
                 AuthorityNames.FOOTER_MANAGE,
+                AuthorityNames.WALLET_MANAGE,
         }
 )
 @SecurityRole(
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
                                         AuthorityNames.ADMIN_MANAGE,
                                         AuthorityNames.ROLE_MANAGE,
                                         AuthorityNames.FOOTER_MANAGE,
+                                        AuthorityNames.WALLET_MANAGE,
                                 })
                         }
                 )
