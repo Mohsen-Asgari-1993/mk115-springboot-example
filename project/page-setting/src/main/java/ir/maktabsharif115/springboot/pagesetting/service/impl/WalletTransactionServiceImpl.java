@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -35,7 +36,7 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     }
 
     @Override
-//    @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).WALLET_MANAGE)")
+    @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).WALLET_MANAGE)")
     public Page<WalletTransaction> findAll(WalletTransactionSearch search, Pageable pageable) {
         return baseRepository.findAll(search, pageable);
     }
