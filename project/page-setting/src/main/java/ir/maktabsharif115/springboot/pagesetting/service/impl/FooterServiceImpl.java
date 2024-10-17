@@ -31,6 +31,6 @@ public class FooterServiceImpl implements FooterService {
     public Footer update(Footer footer) {
         Footer dbFooter = get();
         dbFooter.setColumns(footer.getColumns());
-        return baseRepository.save(footer);
+        return baseRepository.save(dbFooter);
     }
 }
