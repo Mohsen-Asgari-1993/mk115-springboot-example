@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,6 +19,11 @@ import java.time.ZonedDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@CompoundIndexes(
+        value = {
+                @CompoundIndex(def = "{'userId' : 1, 'createDate.millis' : -1}")
+        }
+)
 public class WalletTransaction extends BaseDocument<String> {
 
     public static final String DOCUMENT_NAME = "wallet_transaction";
