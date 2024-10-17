@@ -1,0 +1,152 @@
+db.wallet_transaction.find(
+    {
+        performerId: 637,
+        purpose: 'ORDER'
+    }
+    );
+
+db.wallet_transaction.aggregate(
+    [
+        {
+            $match: {
+                performerId: 637
+            }
+        },
+        {
+            $project: {
+                'cashChange': 1,
+                'creditChange': 1,
+                'type': 1,
+                'userId': 1
+            }
+        },
+        {
+            $sort: {
+                'cashChange': -1
+            }
+        }
+    ]
+    );
+
+// select userId, sum(total_change) from wallet_transaction
+// where purpose = 'WALLET_INCREASE_BY_USER'
+// group by userId
+
+db.wallet_transaction.countDocuments(
+    {
+        userId: 4352,
+        purpose: 'WALLET_INCREASE_BY_USER'
+    }
+    );
+
+db.wallet_transaction.aggregate(
+    [
+        {
+            $match: {
+                purpose: 'WALLET_INCREASE_BY_USER'
+            }
+        },
+        {
+            $group: {
+                _id: "$userId",
+                total: {
+                    $sum: 1
+                }
+            }
+        }
+    ]
+    );
+
+db.wallet_transaction.aggregate(
+    [
+        {
+            $match: {
+                purpose: 'WALLET_INCREASE_BY_USER'
+            }
+        },
+        {
+            $group: {
+                _id: "$userId",
+                total: {
+                    $sum: "$totalChange"
+                }
+            }
+        },
+        {
+            $sort: {
+                total: 1
+            }
+        }
+    ]
+    );
+
+// select userId, purpose, count(*) from wallet_transaction
+// group by userId, purpose
+
+db.wallet_transaction.aggregate(
+    [
+        {
+            $group: {
+                _id: {
+                    "userId": "$userId",
+                    "purpose": "$purpose"
+                },
+                total: {
+                    $sum: 1
+                }
+            }
+        },
+        {
+            $sort: {
+                '_id.userId': 1
+            }
+        }
+    ]
+    );
+
+db.wallet_transaction.aggregate(
+        [
+            {
+                $facet: {
+                    "groupByUserAndPurpose": [
+                        {
+                            $group: {
+                                _id: {
+                                    "userId": "$userId",
+                                    "purpose": "$purpose"
+                                },
+                                total: {
+                                    $sum: 1
+                                }
+                            }
+                        },
+                        {
+                            $sort: {
+                                '_id.userId': 1
+                            }
+                        }
+                    ],
+                    "totalWalletIncreaseByEachUser": [
+                        {
+                            $match: {
+                                purpose: 'WALLET_INCREASE_BY_USER'
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: "$userId",
+                                total: {
+                                    $sum: "$totalChange"
+                                }
+                            }
+                        },
+                        {
+                            $sort: {
+                                total: 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+        );
