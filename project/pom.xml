@@ -20,6 +20,7 @@
         <module>rdbms-crud</module>
         <module>user-management</module>
         <module>mongo-crud</module>
+        <module>page-setting</module>
     </modules>
 
     <properties>

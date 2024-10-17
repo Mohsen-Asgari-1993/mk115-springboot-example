@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
         name = {
                 AuthorityNames.ADMIN_MANAGE,
                 AuthorityNames.ROLE_MANAGE,
+                AuthorityNames.FOOTER_MANAGE,
         }
 )
 @SecurityRole(
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
                                 @SecurityAuthority(name = {
                                         AuthorityNames.ADMIN_MANAGE,
                                         AuthorityNames.ROLE_MANAGE,
+                                        AuthorityNames.FOOTER_MANAGE,
                                 })
                         }
                 )
