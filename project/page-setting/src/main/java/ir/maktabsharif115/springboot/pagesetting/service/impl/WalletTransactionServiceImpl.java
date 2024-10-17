@@ -6,10 +6,13 @@ import ir.maktabsharif115.springboot.pagesetting.document.WalletTransaction;
 import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTransactionPurpose;
 import ir.maktabsharif115.springboot.pagesetting.repository.WalletTransactionRepository;
 import ir.maktabsharif115.springboot.pagesetting.service.WalletTransactionService;
+import ir.maktabsharif115.springboot.pagesetting.service.dto.extra.WalletTransactionAggregationDTO;
 import ir.maktabsharif115.springboot.pagesetting.service.dto.extra.WalletTransactionSearch;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.bson.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +42,24 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).WALLET_MANAGE)")
     public Page<WalletTransaction> findAll(WalletTransactionSearch search, Pageable pageable) {
         return baseRepository.findAll(search, pageable);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).WALLET_MANAGE)")
+    public List<WalletTransactionAggregationDTO> aggregateUserTransactionByPurpose() {
+        List<WalletTransactionAggregationDTO> result = new ArrayList<>();
+        List<Document> documents = baseRepository.aggregateUserTransactionByPurpose();
+        if (CollectionUtils.isNotEmpty(documents)) {
+            result.addAll(
+                    documents.stream().map(
+                            document -> new WalletTransactionAggregationDTO(
+                                    document.get("_id", Long.class),
+                                    document.get("total", Long.class)
+                            )
+                    ).toList()
+            );
+        }
+        return result;
     }
 
     private void insertFakeData() {

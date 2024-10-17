@@ -8,10 +8,13 @@ import ir.maktabsharif115.springboot.pagesetting.document.enumeration.WalletTran
 import ir.maktabsharif115.springboot.pagesetting.service.dto.extra.WalletTransactionSearch;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -35,7 +38,7 @@ interface WalletTransactionCustomRepository {
 
     Page<WalletTransaction> findAll(WalletTransactionSearch search, Pageable pageable);
 
-    Object aggregateUserTransactionByPurpose();
+    List<Document> aggregateUserTransactionByPurpose();
 
 }
 
@@ -80,8 +83,23 @@ class WalletTransactionCustomRepositoryImpl implements WalletTransactionCustomRe
     }
 
     @Override
-    public Object aggregateUserTransactionByPurpose() {
-        return null;
+    public List<Document> aggregateUserTransactionByPurpose() {
+        return mongoTemplate.aggregate(
+                Aggregation.newAggregation(
+                        Aggregation.match(
+                                Criteria.where(WalletTransaction.PURPOSE).is(WalletTransactionPurpose.WALLET_INCREASE_BY_USER)
+                        ),
+                        Aggregation.group(WalletTransaction.USER_ID)
+                                .sum(WalletTransaction.TOTAL_CHANGE).as("total"),
+                        Aggregation.sort(
+//                            Sort.by("total")
+//                            Sort.by("total").descending(),
+                                Sort.Direction.DESC, "total"
+                        )
+                ),
+                WalletTransaction.class,
+                Document.class
+        ).getMappedResults();
     }
 
     private void fillUserIdCriteria(List<Criteria> criteriaList, Long userId) {
