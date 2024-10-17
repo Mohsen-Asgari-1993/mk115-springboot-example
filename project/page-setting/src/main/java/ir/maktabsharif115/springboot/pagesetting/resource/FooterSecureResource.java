@@ -1,6 +1,6 @@
 package ir.maktabsharif115.springboot.pagesetting.resource;
 
-import ir.maktabsharif115.springboot.pagesetting.mapper.FooterMapper;
+import ir.maktabsharif115.springboot.pagesetting.document.Footer;
 import ir.maktabsharif115.springboot.pagesetting.service.FooterService;
 import ir.maktabsharif115.springboot.pagesetting.service.dto.FooterDTO;
 import jakarta.validation.Valid;
@@ -16,14 +16,17 @@ public class FooterSecureResource {
 
     private final FooterService baseService;
 
-    private final FooterMapper baseMapper;
+//    private final FooterMapper baseMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority(T(ir.maktabsharif115.springboot.usermanagement.constants.AuthorityNames).FOOTER_MANAGE)")
     public ResponseEntity<FooterDTO> get() {
         return ResponseEntity.ok(
-                baseMapper.toDTO(
-                        baseService.get()
+//                baseMapper.toDTO(
+//                        baseService.get()
+//                )
+                new FooterDTO(
+                        baseService.get().getColumns()
                 )
         );
     }
@@ -31,10 +34,15 @@ public class FooterSecureResource {
     @PutMapping
     public ResponseEntity<FooterDTO> update(@RequestBody @Valid FooterDTO dto) {
         return ResponseEntity.ok(
-                baseMapper.toDTO(
+//                baseMapper.toDTO(
+//                        baseService.update(
+//                                baseMapper.toDomain(dto)
+//                        )
+//                )
+                new FooterDTO(
                         baseService.update(
-                                baseMapper.toDomain(dto)
-                        )
+                                new Footer(dto.getColumns())
+                        ).getColumns()
                 )
         );
     }

@@ -6,3 +6,8 @@ spring:
   jpa:
     show-sql: true
     hibernate.ddl-auto: update
+  data:
+    mongodb:
+      port: 27017
+      database: mk115_spring
+      host: localhost
