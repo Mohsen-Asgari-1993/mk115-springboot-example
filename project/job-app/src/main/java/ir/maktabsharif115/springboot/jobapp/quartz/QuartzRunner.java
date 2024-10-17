@@ -1,7 +1,7 @@
 package ir.maktabsharif115.springboot.jobapp.quartz;
 
 import lombok.SneakyThrows;
-import org.quartz.Scheduler;
+import org.quartz.*;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +14,9 @@ public class QuartzRunner extends BaseQuartzRunner {
     @Override
     protected void scheduleJobs() {
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
-        scheduleTimeJob(scheduler);
-        scheduleTimeJobTwo(scheduler);
+//        scheduleTimeJob(scheduler);
+//        scheduleTimeJobTwo(scheduler);
+        scheduleTimeJobThree(scheduler);
     }
 
     @SneakyThrows
@@ -38,5 +39,25 @@ public class QuartzRunner extends BaseQuartzRunner {
                 "0/10 * * ? * * *",
                 "TimerJobTwo"
         );
+    }
+
+    @SneakyThrows
+    private void scheduleTimeJobThree(Scheduler scheduler) {
+
+        JobDetail jobDetail = JobBuilder.newJob(TimerJob.class)
+                .withIdentity(TimerJob.class.getSimpleName()).build();
+
+        DailyTimeIntervalScheduleBuilder builder = DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule()
+                .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(15, 52, 0))
+                .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(15, 53, 30))
+                .withIntervalInSeconds(4)
+                .onEveryDay()
+                .withMisfireHandlingInstructionIgnoreMisfires();
+
+        DailyTimeIntervalTrigger trigger = TriggerBuilder.newTrigger().withIdentity(
+                TimerJob.class.getSimpleName() + getTriggerName()
+        ).withSchedule(builder).build();
+
+        scheduler.scheduleJob(jobDetail, trigger);
     }
 }
